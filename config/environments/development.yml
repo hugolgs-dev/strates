@@ -1,0 +1,19 @@
+name: strates
+
+server:
+  host: 127.0.0.1
+  port: 3000
+  secret_key_base: "090dd217b6d16a533ee444dc422caf467ab558950b544d5e4dc1c646236c6948"
+
+database:
+  url: "sqlite3:./db/strates_development.db?foreign_keys=on&journal_mode=wal&busy_timeout=5000"
+
+session:
+  key: "strates.session"
+  store: "signed_cookie"
+  adapter: "memory"
+  expires: 0
+
+logging:
+  severity: "debug"
+  colorize: true

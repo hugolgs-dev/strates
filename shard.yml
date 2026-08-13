@@ -1,0 +1,27 @@
+name: strates
+version: 0.1.0
+
+authors:
+  - Hugo Lignères
+
+crystal: ">= 1.20.0, < 2.0"
+
+license: UNLICENSED
+
+targets:
+  strates:
+    main: src/strates.cr
+
+dependencies:
+  amber:
+    github: amberframework/amber
+    version: 2.0.0-beta.4
+  grant:
+    github: crimson-knight/grant
+    commit: 2665a978b43ac608c68cde9243821f8f8f053372
+  asset_pipeline:
+    github: amberframework/asset_pipeline
+    version: ~> 0.37.0
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+    version: ~> 0.23.0

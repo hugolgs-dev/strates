@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strates</title>
+  <%= favicon_tag("images/favicon.svg") %>
+  <%= stylesheet_link_tag("stylesheets/app.css") %>
+  <%= stylesheet_link_tag("stylesheets/oat.min.css") %>
+  <%= javascript_importmap_tag(
+    {"app" => "javascript/app.js", "editor" => "javascript/vendor/editor.js"},
+    preload: ["javascript/app.js"]
+  ) %>
+</head>
+<body>
+    <main>
+        <%= render(partial: "layouts/_header.ecr") %>
+        <%= content %>
+        <%= render(partial: "layouts/_footer.ecr") %>
+    </main>
+  <script type="module">import "app";</script>
+  <%= javascript_include_tag("javascript/oat.min.js", defer: true) %>
+</body>
+</html>

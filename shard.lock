@@ -1,0 +1,22 @@
+version: 2.0
+shards:
+  amber:
+    git: https://github.com/amberframework/amber.git
+    version: 2.0.0-beta.4
+
+  asset_pipeline:
+    git: https://github.com/amberframework/asset_pipeline.git
+    version: 0.37.0
+
+  db:
+    git: https://github.com/crystal-lang/crystal-db.git
+    version: 0.14.0
+
+  grant:
+    git: https://github.com/crimson-knight/grant.git
+    version: 0.23.4+git.commit.2665a978b43ac608c68cde9243821f8f8f053372
+
+  sqlite3:
+    git: https://github.com/crystal-lang/crystal-sqlite3.git
+    version: 0.23.0
+

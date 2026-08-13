@@ -1,0 +1,180 @@
+:root {
+    --background: #fff;
+    --foreground: #09090b;
+    --card: #fff;
+    --card-foreground: #09090b;
+    --primary: #00a36c;
+    --primary-foreground: #fafafa;
+    --secondary: #c1e1c1;
+    --secondary-foreground: #00a36c;
+    --muted: #c1e1c1;
+    --muted-foreground: #71717a;
+    --faint: #fafafa;
+    --faint-foreground: #a1a1aa;
+    --accent: #c1e1c1;
+    --danger: #d32f2f;
+    --danger-foreground: #fafafa;
+    --success: #008032;
+    --success-foreground: #fafafa;
+    --warning: #a65b00;
+    --warning-foreground: #09090b;
+    --border: #d4d4d8;
+    --input: #d4d4d8;
+    --ring: #00a36c;
+}
+/* ---- page rhythm ---- */
+main {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+h1, strong {
+    color: var(--primary);
+}
+
+main h1 a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+
+
+
+/* ---- strate header ---- */
+.strate {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.strate-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.strate-title {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.strate-title h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+/* slug badge — monospace, muted, so it reads as an id */
+.strate-title .badge {
+  font-family: monospace;
+  font-size: .8rem;
+  background: var(--muted);
+  color: var(--secondary-foreground);
+}
+
+/* ---- two panes ---- */
+.panes {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  height: 70vh;
+  width: min(96vw, 1700px);
+  margin-inline: calc(50% - min(48vw, 850px));
+}
+
+.pane {
+  flex: 1 1 50%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;                 /* clip children to rounded corners */
+  background: var(--card);
+}
+
+/* little label bar on top of each pane */
+.pane-label {
+  padding: .4rem .75rem;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  background: var(--faint);
+  border-bottom: 1px solid var(--border);
+}
+
+/* editor + output fill the remaining pane height */
+.code,
+.output {
+  flex: 1;
+  min-height: 0;                    /* let it shrink so it scrolls, not overflow */
+  margin: 0;
+  font-family: monospace;
+  font-size: 0.82rem;
+}
+
+.code .cm-editor { height: 100%; }
+
+.output {
+  overflow: auto;
+  padding: .75rem;
+  background: var(--card);
+  color: var(--card-foreground);
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.strate-name-input {
+  font-size: 1.6rem; font-weight: 700;
+  border: none; background: transparent; width: auto;
+}
+.strate-name-input:focus { outline: 1px solid var(--ring); border-radius: 4px; }
+
+.modal-editor {
+  height: 300px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cm-editor {
+    border: 1px solid #181c24;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    font-size: 14px;
+    margin: 15px;
+}
+
+.cm-scroller {
+    max-height: 70vh;
+    font-family:
+        "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo,
+        Consolas, monospace;
+    line-height: 1.6;
+}
+
+.cm-content {
+    padding: 10px 0;
+}
+.cm-gutters {
+    padding-left: 6px;
+}
+
+.cm-editor.cm-focused {
+    outline: 2px solid #00a36c;
+    outline-offset: 0;
+}
+
+/* ---- responsive: stack ---- */
+@media (max-width: 800px) {
+  .panes { flex-direction: column; height: auto; }
+  .pane  { height: 45vh; }
+}

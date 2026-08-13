@@ -1,0 +1,24 @@
+app: strates
+type: web
+author: Your Name
+email: your.email@example.com
+database: sqlite
+language: crystal
+model: grant
+template: ecr
+
+watch:
+  run:
+    build_commands:
+      - npm run build:js
+      - mkdir -p bin
+      - crystal build ./src/strates.cr -o bin/strates
+    run_commands:
+      - bin/strates
+    include:
+      - ./config/**/*.cr
+      - ./config/environments/*.yml
+      - ./src/**/*.cr
+      - ./src/**/*.ecr
+      - ./app/assets/**/*
+      - ./frontend/**/*
