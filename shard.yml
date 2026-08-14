@@ -6,7 +6,7 @@ authors:
 
 crystal: ">= 1.20.0, < 2.0"
 
-license: UNLICENSED
+license: MIT
 
 targets:
   strates:
@@ -25,6 +25,3 @@ dependencies:
   sqlite3:
     github: crystal-lang/crystal-sqlite3
     version: ~> 0.23.0
-  ameba:
-    github: amberframework/ameba
-    version: ~> 0.15.0
