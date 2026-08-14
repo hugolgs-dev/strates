@@ -19,6 +19,7 @@
         <%= render(partial: "layouts/_footer.ecr") %>
     </main>
   <script type="module">import "app";</script>
+  <%= javascript_include_tag("javascript/htmx.min.js", defer: true) %>
   <%= javascript_include_tag("javascript/oat.min.js", defer: true) %>
 </body>
 </html>
