@@ -14,14 +14,14 @@ class SnippetsController < ApplicationController
     scope = scope.where(crystal_version: version) unless version.empty?
 
     total = scope.count
-    total_pages = [(total / PER_PAGE.to_f).ceil.to_i, 1].max
+
     snippets = scope.limit(PER_PAGE).offset(offset).all
 
     return render(partial: "snippets/_results.ecr") if request.headers["HX-Request"]?
 
     respond_with do
       html { render("index.ecr") }
-      json { snippets.to_json }
+      json { {snippets: snippets, total: total, page: page, per_page: PER_PAGE}.to_json }
     end
   end
 

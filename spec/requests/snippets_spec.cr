@@ -306,4 +306,15 @@ describe SnippetsController do
       body.should contain("New Strate")
     end
   end
+
+  it "includes pagination metadata in the JSON representation" do
+    3.times { |i| seed(name: "Snippet #{i}") }
+
+    response = get("/", HTTP::Headers{"Accept" => "application/json"})
+
+    response.json["total"].as_i.should eq(3)
+    response.json["page"].as_i.should eq(1)
+    response.json["per_page"].as_i.should eq(SnippetsController::PER_PAGE)
+    response.json["snippets"].as_a.size.should eq(3)
+  end
 end

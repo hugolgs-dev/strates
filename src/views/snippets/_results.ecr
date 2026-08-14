@@ -25,7 +25,7 @@
   </div>
 <% end %>
 
-<% if total_pages > 1 %>
+<% if total_pages(total) > 1 %>
   <nav class="pagination" aria-label="Pagination">
     <% if page > 1 %>
       <% prev_url = page_path(query, version, page - 1) %>
@@ -33,9 +33,9 @@
          hx-target="#results" hx-push-url="true">Previous</a>
     <% end %>
 
-    <span>Page <%= page %> of <%= total_pages %></span>
+    <span>Page <%= page %> of <%= total_pages(total) %></span>
 
-    <% if page < total_pages %>
+    <% if page < total_pages(total) %>
       <% next_url = page_path(query, version, page + 1) %>
       <a href="<%= next_url %>" hx-get="<%= next_url %>"
          hx-target="#results" hx-push-url="true">Next</a>
