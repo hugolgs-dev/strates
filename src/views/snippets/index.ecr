@@ -12,11 +12,11 @@
     <header><h3>New Strate</h3></header>
     <label>Name <input id="new-name" required></label>
     <label>Version
-      <select id="new-version">
-        <% CrystalVersions.all.each do |v| %>
-          <option value="<%= v %>"><%= v %></option>
-        <% end %>
-      </select>
+        <input id="new-version" list="crystal-versions"
+               value="<%= Snippet::DEFAULT_CRYSTAL_VERSION %>" autocomplete="on">
+        <datalist id="crystal-versions">
+          <% CrystalVersions.all.each do |v| %><option value="<%= v %>"></option><% end %>
+        </datalist>
     </label>
     <label>Code</label>
     <div id="new-editor" class="modal-editor"
@@ -46,6 +46,11 @@
 
 <form method="get" action="/">
   <input type="search" name="q" value="<%= HTML.escape(params["q"]?.to_s) %>" placeholder="Search by name">
+  <button type="submit">Search</button>
+</form>
+
+<form method="get" action="/">
+  <input type="search" name="q" value="<%= HTML.escape(params["q"]?.to_s) %>" placeholder="Search by version">
   <button type="submit">Search</button>
 </form>
 

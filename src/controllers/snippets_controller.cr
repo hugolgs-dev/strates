@@ -7,13 +7,13 @@ class SnippetsController < ApplicationController
     page = 1 if page < 1
 
     query = params["q"]?.to_s.strip
+    version = params["v"]?.to_s.strip
     offset = (page - 1) * PER_PAGE
 
-    snippets = if query.empty?
-      Snippet.recent.limit(PER_PAGE).offset(offset).all
-    else
-      Snippet.recent.where.like(:name, "%#{query}%").limit(PER_PAGE).offset(offset).all
-    end
+    snippets = Snippet.recent
+    snippets = snippets.where.like(:name, "%#{query}%") unless query.empty?
+    snippets = snippets.where(crystal_version: version) unless version.empty?
+    snippets = snippets.limit(PER_PAGE).offset(offset).all
 
     respond_with do
       html { render("index.ecr") }

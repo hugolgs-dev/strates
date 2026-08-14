@@ -1,0 +1,44 @@
+<% if snippets.empty? %>
+  <p>No snippets available</p>
+<% else %>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Slug</th>
+          <th>Name</th>
+          <th>Version</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% snippets.each do |snippet| %>
+          <tr>
+            <td><%= snippet.slug %></td>
+            <td><%= HTML.escape(snippet.name) %></td>
+            <td class="badge" data-variant="success"><%= HTML.escape(snippet.crystal_version) %></td>
+            <td><a class="button" href="/<%= snippet.slug %>">View</a></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<% if total_pages > 1 %>
+  <nav class="pagination" aria-label="Pagination">
+    <% if page > 1 %>
+      <% prev_url = page_path(query, version, page - 1) %>
+      <a href="<%= prev_url %>" hx-get="<%= prev_url %>"
+         hx-target="#results" hx-push-url="true">Previous</a>
+    <% end %>
+
+    <span>Page <%= page %> of <%= total_pages %></span>
+
+    <% if page < total_pages %>
+      <% next_url = page_path(query, version, page + 1) %>
+      <a href="<%= next_url %>" hx-get="<%= next_url %>"
+         hx-target="#results" hx-push-url="true">Next</a>
+    <% end %>
+  </nav>
+<% end %>
