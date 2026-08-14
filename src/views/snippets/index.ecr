@@ -12,11 +12,7 @@
     <header><h3>New Strate</h3></header>
     <label>Name <input id="new-name" required></label>
     <label>Version
-        <input id="new-version" list="crystal-versions"
-               value="<%= Snippet::DEFAULT_CRYSTAL_VERSION %>" autocomplete="on">
-        <datalist id="crystal-versions">
-          <% CrystalVersions.all.each do |v| %><option value="<%= v %>"></option><% end %>
-        </datalist>
+        <input id="new-version" list="crystal-versions" value="<%= Snippet::DEFAULT_CRYSTAL_VERSION %>" autocomplete="off">
     </label>
     <label>Code</label>
     <div id="new-editor" class="modal-editor"
@@ -44,42 +40,21 @@
   </form>
 </dialog>
 
-<form method="get" action="/">
+<form method="get" action="/"
+      hx-get="/" hx-trigger="input changed delay:300ms, submit"
+      hx-target="#results" hx-push-url="true">
   <input type="search" name="q" value="<%= HTML.escape(params["q"]?.to_s) %>" placeholder="Search by name">
+  <input name="v" list="crystal-versions" value="<%= HTML.escape(params["v"]?.to_s) %>" placeholder="Any version">
   <button type="submit">Search</button>
 </form>
 
-<form method="get" action="/">
-  <input type="search" name="q" value="<%= HTML.escape(params["q"]?.to_s) %>" placeholder="Search by version">
-  <button type="submit">Search</button>
-</form>
 
-<% if snippets.empty? %>
-  <p>No snippets available</p>
-<% else %>
-  <div class="table">
-    <table>
-      <thead>
-        <tr>
-          <th>Slug</th>
-          <th>Name</th>
-          <th>Version</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% snippets.each do |snippet| %>
-          <tr>
-            <td><%= snippet.slug %></td>
-            <td><%= HTML.escape(snippet.name) %></td>
-            <td class="badge" data-variant="success"><%= HTML.escape(snippet.crystal_version) %></td>
-            <td><a class="button" href="/<%= snippet.slug %>">View</a></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
+<div id="results"><%= render(partial: "snippets/_results.ecr") %></div>
+
+<!-- Datalist for Crystal versions, used by the search form and the new strate dialog -->
+<datalist id="crystal-versions">
+  <% CrystalVersions.all.each do |v| %><option value="<%= v %>"></option><% end %>
+</datalist>
 
 <script type="module">
   let view = null;

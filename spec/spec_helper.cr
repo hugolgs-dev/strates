@@ -15,4 +15,4 @@ include Amber::Testing::RequestHelpers
 include Amber::Testing::Assertions
 
 # No spec may reach carc.in. Individual specs override this.
-CrystalVersions.fetcher = ->{ ["1.21.0", "1.20.3"] }
+CrystalVersions.fetcher = -> { ["1.21.0", "1.20.3"] }

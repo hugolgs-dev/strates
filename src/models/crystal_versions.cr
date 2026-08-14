@@ -17,7 +17,7 @@ module CrystalVersions
   @@versions : Array(String) = FALLBACK.dup
   @@refresh_after : Time = Time.unix(0)
   @@refreshing : Bool = false
-  @@fetcher : Proc(Array(String)) = ->{ fetch_from_carc_in }
+  @@fetcher : Proc(Array(String)) = -> { fetch_from_carc_in }
 
   def self.all : Array(String)
     refresh_if_due
@@ -31,6 +31,7 @@ module CrystalVersions
   def self.fetcher=(callable : Proc(Array(String)))
     @@mutex.synchronize { @@fetcher = callable }
   end
+
   def self.reset!(versions : Array(String) = FALLBACK.dup) : Nil
     @@mutex.synchronize do
       @@versions = versions
@@ -38,7 +39,6 @@ module CrystalVersions
       @@refreshing = false
     end
   end
-
 
   private def self.refresh_if_due : Nil
     claimed = @@mutex.synchronize do

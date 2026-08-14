@@ -18,9 +18,9 @@ Amber::Server.configure do
   end
 
   routes :web do
-    get  "/", SnippetsController, :index
+    get "/", SnippetsController, :index
     post "/:slug/fork", SnippetsController, :fork, {"slug" => /[a-zA-Z0-9]{8}/}
-    get  "/:slug", SnippetsController, :show, {"slug" => /[a-zA-Z0-9]{8}/}
+    get "/:slug", SnippetsController, :show, {"slug" => /[a-zA-Z0-9]{8}/}
   end
 
   routes :static do
@@ -30,5 +30,5 @@ Amber::Server.configure do
   routes :api do
     post "/strates", SnippetsController, :create
     post "/:slug/save", SnippetsController, :save, {"slug" => /[a-zA-Z0-9]{8}/}
-   end
+  end
 end

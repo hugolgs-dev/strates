@@ -154,9 +154,9 @@ describe Snippet do
 
   describe ".recent" do
     it "orders newest first" do
-      first  = make_snippet(name: "First")
+      first = make_snippet(name: "First")
       second = make_snippet(name: "Second")
-      third  = make_snippet(name: "Third")
+      third = make_snippet(name: "Third")
 
       Snippet.recent.to_a.map(&.slug).should eq([third.slug, second.slug, first.slug])
     end

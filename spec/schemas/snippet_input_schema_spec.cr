@@ -29,12 +29,12 @@ end
 
 describe SnippetInputSchema do
   before_each do
-    CrystalVersions.fetcher = ->{ ["1.21.0", "1.20.3"] }
+    CrystalVersions.fetcher = -> { ["1.21.0", "1.20.3"] }
     CrystalVersions.reset!
   end
 
   after_each do
-    CrystalVersions.fetcher = ->{ CrystalVersions::FALLBACK.dup }
+    CrystalVersions.fetcher = -> { CrystalVersions::FALLBACK.dup }
     CrystalVersions.reset!
   end
 
@@ -125,7 +125,7 @@ describe SnippetInputSchema do
     it "tracks changes to the available version list" do
       schema_valid?(input(crystal_version: "1.21.0")).should be_true
 
-      CrystalVersions.fetcher = ->{ ["1.19.1"] }
+      CrystalVersions.fetcher = -> { ["1.19.1"] }
       CrystalVersions.reset!
 
       error_codes(input(crystal_version: "1.21.0")).should eq(["crystal_version/unknown_crystal_version"])

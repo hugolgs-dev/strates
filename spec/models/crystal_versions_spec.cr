@@ -6,13 +6,13 @@ end
 
 describe CrystalVersions do
   before_each do
-    CrystalVersions.fetcher = ->{ test_versions }
+    CrystalVersions.fetcher = -> { test_versions }
     CrystalVersions.reset!
   end
 
   # Leave a safe offline stub behind for every other spec file.
   after_each do
-    CrystalVersions.fetcher = ->{ CrystalVersions::FALLBACK.dup }
+    CrystalVersions.fetcher = -> { CrystalVersions::FALLBACK.dup }
     CrystalVersions.reset!
   end
 
@@ -23,7 +23,7 @@ describe CrystalVersions do
 
     it "does not refetch within the TTL" do
       calls = 0
-      CrystalVersions.fetcher = ->{ calls += 1; test_versions }
+      CrystalVersions.fetcher = -> { calls += 1; test_versions }
       CrystalVersions.reset!
 
       3.times { CrystalVersions.all }
@@ -40,7 +40,7 @@ describe CrystalVersions do
       warm = CrystalVersions.all
       warm.should eq(test_versions)
 
-      CrystalVersions.fetcher = ->{ raise "carc.in is down" }
+      CrystalVersions.fetcher = -> { raise "carc.in is down" }
       CrystalVersions.reset!(warm) # stale, but the good list is still cached
 
       CrystalVersions.all.should eq(test_versions)
@@ -48,18 +48,18 @@ describe CrystalVersions do
 
     # The old code's real defect: one outage pinned the list to FALLBACK forever.
     it "recovers once carc.in returns" do
-      CrystalVersions.fetcher = ->{ raise "carc.in is down" }
+      CrystalVersions.fetcher = -> { raise "carc.in is down" }
       CrystalVersions.reset!
       CrystalVersions.all.should eq(CrystalVersions::FALLBACK)
 
-      CrystalVersions.fetcher = ->{ test_versions }
+      CrystalVersions.fetcher = -> { test_versions }
       CrystalVersions.reset!
       CrystalVersions.all.should eq(test_versions)
     end
 
     it "does not retry on every request" do
       calls = 0
-      CrystalVersions.fetcher = ->{ calls += 1; raise "carc.in is down" }
+      CrystalVersions.fetcher = -> { calls += 1; raise "carc.in is down" }
       CrystalVersions.reset!
 
       3.times { CrystalVersions.all }

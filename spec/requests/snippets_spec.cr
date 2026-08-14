@@ -21,12 +21,12 @@ describe SnippetsController do
   before_each do
     Snippet.clear
     # Don't inherit whatever the last spec file left behind.
-    CrystalVersions.fetcher = ->{ ["1.21.0", "1.20.3"] }
+    CrystalVersions.fetcher = -> { ["1.21.0", "1.20.3"] }
     CrystalVersions.reset!
   end
 
   after_each do
-    CrystalVersions.fetcher = ->{ CrystalVersions::FALLBACK.dup }
+    CrystalVersions.fetcher = -> { CrystalVersions::FALLBACK.dup }
     CrystalVersions.reset!
   end
 
@@ -109,8 +109,6 @@ describe SnippetsController do
       body.should_not contain("<script>alert(1)</script>")
       body.should contain("&lt;script&gt;")
     end
-
-
   end
 
   describe "POST /strates" do
@@ -245,4 +243,67 @@ describe SnippetsController do
     end
   end
 
+  describe "filters" do
+    it "filters by exact version" do
+      seed(name: "Old", version: "1.20.3")
+      seed(name: "Current", version: "1.21.0")
+
+      body = get("/?v=1.20.3").body
+      body.should contain("Old")
+      body.should_not contain("Current")
+    end
+
+    it "combines name and version filters" do
+      seed(name: "Parser demo", version: "1.21.0")
+      seed(name: "Parser demo", version: "1.20.3")
+      seed(name: "Unrelated", version: "1.21.0")
+
+      body = get("/?q=Parser&v=1.20.3").body
+      body.should contain("Parser demo")
+      body.should_not contain("Unrelated")
+      body.scan(/<tr>/).size.should eq(2) # header row + one match
+    end
+
+    it "returns the empty state for an unknown version" do
+      seed(version: "1.21.0")
+      get("/?v=9.9.9").body.should contain("No snippets available")
+    end
+  end
+
+  describe "pagination" do
+    it "shows a next link when there are more results than PER_PAGE" do
+      (SnippetsController::PER_PAGE + 1).times { |i| seed(name: "Snippet #{i}") }
+      get("/").body.should contain("page=2")
+    end
+
+    it "hides pagination when everything fits on one page" do
+      seed
+      get("/").body.should_not contain("page=2")
+    end
+
+    it "preserves filters in pagination links" do
+      (SnippetsController::PER_PAGE + 1).times { |i| seed(name: "Match #{i}", version: "1.20.3") }
+
+      body = get("/?q=Match&v=1.20.3").body
+      body.should contain("q=Match")
+      body.should contain("v=1.20.3")
+    end
+  end
+
+  describe "HTMX fragment responses" do
+    it "returns only the results fragment for an HX-Request" do
+      seed(name: "Fragment me")
+      body = get("/", HTTP::Headers{"HX-Request" => "true"}).body
+
+      body.should contain("Fragment me")
+      body.should_not contain("<html")
+      body.should_not contain("New Strate") # the dialog lives outside the partial
+    end
+
+    it "returns the full page without the header" do
+      body = get("/").body
+      body.should contain("<html")
+      body.should contain("New Strate")
+    end
+  end
 end

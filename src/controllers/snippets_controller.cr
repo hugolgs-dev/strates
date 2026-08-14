@@ -1,5 +1,4 @@
 class SnippetsController < ApplicationController
-
   PER_PAGE = 25
 
   def index
@@ -10,15 +9,33 @@ class SnippetsController < ApplicationController
     version = params["v"]?.to_s.strip
     offset = (page - 1) * PER_PAGE
 
-    snippets = Snippet.recent
-    snippets = snippets.where.like(:name, "%#{query}%") unless query.empty?
-    snippets = snippets.where(crystal_version: version) unless version.empty?
-    snippets = snippets.limit(PER_PAGE).offset(offset).all
+    scope = Snippet.recent
+    scope = scope.where.like(:name, "%#{query}%") unless query.empty?
+    scope = scope.where(crystal_version: version) unless version.empty?
+
+    total = scope.count
+    total_pages = [(total / PER_PAGE.to_f).ceil.to_i, 1].max
+    snippets = scope.limit(PER_PAGE).offset(offset).all
+
+    return render(partial: "snippets/_results.ecr") if request.headers["HX-Request"]?
 
     respond_with do
       html { render("index.ecr") }
       json { snippets.to_json }
     end
+  end
+
+  private def total_pages(total : Int64) : Int32
+    [(total / PER_PAGE.to_f).ceil.to_i, 1].max
+  end
+
+  private def page_path(query : String, version : String, page : Int32) : String
+    params = HTTP::Params.build do |form|
+      form.add("q", query) unless query.empty?
+      form.add("v", version) unless version.empty?
+      form.add("page", page.to_s)
+    end
+    "/?#{params}"
   end
 
   def show
@@ -45,6 +62,7 @@ class SnippetsController < ApplicationController
     data = begin
       Amber::Schema::Parser::ParserRegistry.parse_request(request)
     rescue ex : Amber::Schema::SchemaDefinitionError
+      Log.warn { "rejected malformed request body: #{ex.message}" }
       return error_response(400, [{field: "body", message: "malformed request body", code: "invalid_body"}])
     end
 
@@ -52,9 +70,10 @@ class SnippetsController < ApplicationController
     result = schema.validate
 
     unless result.success?
-      return error_response(400, result.errors.map { |e|
+      errors = result.errors.map do |e|
         {field: e.field, message: e.message.to_s, code: e.code}
-      })
+      end
+      return error_response(400, errors)
     end
 
     snippet = Snippet.create_snippet(
