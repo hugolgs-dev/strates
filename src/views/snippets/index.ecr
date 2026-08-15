@@ -5,10 +5,22 @@
     <strong><a href="https://ellie-app.com/" target="_blank" rel="noopener noreferrer">Ellie</a></strong>
 </p>
 
-<button commandfor="new-strate-dialog" command="show-modal">New Strate</button>
+<section class="actions">
+    <button commandfor="new-strate-dialog" command="show-modal">New Strate</button>
+
+    <button commandfor="howitworks-dialog" command="show-modal" class="outline">How Strates works</button>
+
+
+    <form class="search-form" method="get" action="/"
+        hx-get="/" hx-trigger="input changed delay:300ms, submit"
+        hx-target="#results" hx-push-url="true">
+    <input type="search" name="q" value="<%= HTML.escape(params["q"]?.to_s) %>" placeholder="Search by name">
+    <input name="v" list="crystal-versions" value="<%= HTML.escape(params["v"]?.to_s) %>" placeholder="Any version">
+    </form>
+</section>
 
 <dialog id="new-strate-dialog" closedby="any">
-  <div>
+<div>
     <header><h3>New Strate</h3></header>
     <label>Name <input id="new-name" required></label>
     <label>Version
@@ -18,35 +30,26 @@
     <div id="new-editor" class="modal-editor"
         data-doc="<%= HTML.escape(Snippet::DEFAULT_CONTENT) %>"></div>
     <footer>
-      <button type="button" commandfor="new-strate-dialog" command="close">Cancel</button>
-      <button type="button" id="new-create" class="primary">Create</button>
+    <button type="button" commandfor="new-strate-dialog" command="close">Cancel</button>
+    <button type="button" id="new-create" class="primary">Create</button>
     </footer>
-  </div>
+</div>
 </dialog>
 
-<button commandfor="howitworks-dialog" command="show-modal" class="outline">How Strates works</button>
 <dialog id="howitworks-dialog" closedby="any">
-  <form method="dialog">
+<form method="dialog">
     <header>
-      <h3>How Strates works</h3>
+    <h3>How Strates works</h3>
     </header>
     <div>
-      <p>TBD</p>
-      <p class="small">Click confirm, outside the dialog or press Escape to close.</p>
+    <p>TBD</p>
+    <p class="small">Click confirm, outside the dialog or press Escape to close.</p>
     </div>
     <footer>
-      <button type="button" commandfor="howitworks-dialog" command="close" class="primary">Close</button>
+    <button type="button" commandfor="howitworks-dialog" command="close" class="primary">Close</button>
     </footer>
-  </form>
-</dialog>
-
-<form method="get" action="/"
-      hx-get="/" hx-trigger="input changed delay:300ms, submit"
-      hx-target="#results" hx-push-url="true">
-  <input type="search" name="q" value="<%= HTML.escape(params["q"]?.to_s) %>" placeholder="Search by name">
-  <input name="v" list="crystal-versions" value="<%= HTML.escape(params["v"]?.to_s) %>" placeholder="Any version">
 </form>
-
+</dialog>
 
 <div id="results"><%= render(partial: "snippets/_results.ecr") %></div>
 
