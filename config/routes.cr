@@ -21,6 +21,7 @@ Amber::Server.configure do
     get "/", SnippetsController, :index
     post "/:slug/fork", SnippetsController, :fork, {"slug" => /[a-zA-Z0-9]{8}/}
     get "/:slug", SnippetsController, :show, {"slug" => /[a-zA-Z0-9]{8}/}
+    websocket "/ws", UserSocket
   end
 
   routes :static do

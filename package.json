@@ -19,6 +19,7 @@
     "watch:js": "esbuild frontend/editor.js --bundle --format=esm --outfile=app/assets/javascript/vendor/editor.js --sourcemap --watch"
   },
   "dependencies": {
+    "@codemirror/collab": "^6.1.1",
     "@codemirror/language": "^6.12.4",
     "@codemirror/legacy-modes": "^6.5.3",
     "@codemirror/theme-one-dark": "^6.1.3",

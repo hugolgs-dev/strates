@@ -5,5 +5,6 @@ require "./schemas/**"
 require "./jobs/**"
 require "./mailers/**"
 require "./channels/**"
+require "./sockets/**"
 
 Amber::Server.start

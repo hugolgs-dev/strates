@@ -16,7 +16,7 @@
           <tr>
             <td><%= snippet.slug %></td>
             <td><%= HTML.escape(snippet.name) %></td>
-            <td class="badge" data-variant="success"><%= HTML.escape(snippet.crystal_version) %></td>
+            <td data-variant="success"><%= HTML.escape(snippet.crystal_version) %></td>
             <td><a class="button" href="/<%= snippet.slug %>">View</a></td>
           </tr>
         <% end %>

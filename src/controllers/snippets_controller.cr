@@ -42,6 +42,8 @@ class SnippetsController < ApplicationController
     snippet = Snippet.find_by(slug: params["slug"])
     return set_response(body: "Snippet not found", status_code: 404, content_type: "text/plain") if snippet.nil?
 
+    room = Room.find(snippet.slug) || Room.create!(slug: snippet.slug, content: snippet.content)
+
     respond_with do
       html { render("show.ecr") }
       json { snippet.to_json }

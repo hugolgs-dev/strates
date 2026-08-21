@@ -26,20 +26,39 @@
   <section class="panes">
     <div class="pane">
       <div class="pane-label">Editor</div>
-      <div class="code" data-doc="<%= HTML.escape(snippet.content) %>"></div>
+      <div class="code"
+           data-doc="<%= HTML.escape(room.content) %>"
+           data-version="<%= room.version %>"
+           data-slug="<%= snippet.slug %>"></div>
+
     </div>
     <div class="pane">
         <div class="pane-label">Output</div>
-        <div class="code" data-doc="<%= HTML.escape(snippet.content) %>"></div>
+        <div class="output" data-doc="<%= HTML.escape(snippet.content) %>"></div>
     </div>
   </section>
 </div>
 
 <script type="module">
-  import { mountEditor } from "editor";
+  import { mountCollabEditor } from "editor";
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+  };
 
   const el = document.querySelector(".code");
-  const view = mountEditor(el, el.dataset.doc);
+  const name = store.get("strates-name") || prompt("Your name?") || "anon";
+  store.set("strates-name", name);
+  localStorage.setItem("strates-name", name);
+
+  const view = mountCollabEditor(el, {
+    doc: el.dataset.doc,
+    version: Number(el.dataset.version),
+    slug: el.dataset.slug,
+    name,
+  });
+
   const button = document.querySelector("#save");
 
   button.addEventListener("click", async () => {

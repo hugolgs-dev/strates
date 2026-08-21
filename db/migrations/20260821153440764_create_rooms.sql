@@ -1,0 +1,11 @@
+-- +micrate Up
+CREATE TABLE rooms (
+  slug       TEXT PRIMARY KEY,
+  content    TEXT NOT NULL,
+  version    INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- +micrate Down
+DROP TABLE rooms;

@@ -6,6 +6,7 @@ require "../src/schemas/**"
 require "../src/jobs/**"
 require "../src/mailers/**"
 require "../src/channels/**"
+require "../src/sockets/**"
 
 # Amber Testing Framework
 require "amber/testing/testing"
